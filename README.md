@@ -21,7 +21,6 @@ Crie um fork do repositório e, ao concluir o desafio, faça um pull-request.
    * Seção de filtros (Datas de início e fim, valor e nome do cliente).
    * Lista dos pedidos filtrados
    * Modal exibindo as informações do pedido e dados do cliente
-![UI](https://feng.devteam.rocks/wireframe-dev.png)
 * As informações de clientes são:
    * id
    * nome
