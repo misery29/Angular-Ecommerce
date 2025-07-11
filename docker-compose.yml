@@ -26,7 +26,7 @@ services:
       - ./app/backend:/app
     environment:
       DATABASE_URL: postgresql://dev:dev@postgres:5432/festival
-    command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run start:dev"
+    command: sh -c "if [ ! -d ./prisma/migrations ] || [ -z \"$(ls -A ./prisma/migrations)\" ]; then npx prisma migrate dev --name init --skip-generate; fi && npx prisma generate && npx prisma migrate deploy && npm run start:dev"
 
 volumes:
   pgdata:
