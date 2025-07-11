@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: festival_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: festival
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./app/backend
+    container_name: festival_backend
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app/backend:/app
+    environment:
+      DATABASE_URL: postgresql://dev:dev@postgres:5432/festival
+    command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run start:dev"
+
+volumes:
+  pgdata:
