@@ -51,4 +51,11 @@ export class OrdersService {
     if (!order) throw new NotFoundException('Pedido não encontrado');
     return order;
   }
-}
+
+  async findAllOrders() {
+    return this.prisma.order.findMany({
+      include: {
+        items: { include: { product: true } },}
+    })};
+
+};

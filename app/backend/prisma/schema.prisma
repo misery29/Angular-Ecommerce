@@ -20,6 +20,7 @@ model User {
      password String
      phone String
      orders Order[]
+     role     String   @default("user")
 }
 
 model Product {

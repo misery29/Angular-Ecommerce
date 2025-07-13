@@ -12,9 +12,6 @@ class CreateOrderItemDto {
 }
 
 export class CreateOrderDto {
-  @IsNotEmpty()
-  @IsInt()
-  clientId: number;
 
   @IsArray()
   @ValidateNested({ each: true })
