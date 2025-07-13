@@ -28,5 +28,19 @@ services:
       DATABASE_URL: postgresql://dev:dev@postgres:5432/festival
     command: sh -c "if [ ! -d ./prisma/migrations ] || [ -z \"$(ls -A ./prisma/migrations)\" ]; then npx prisma migrate dev --name init --skip-generate; fi && npx prisma generate && npx prisma migrate deploy && npm run start:dev"
 
+  frontend:
+    build: ./app/frontend
+    container_name: festival_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      - ./app/frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+
 volumes:
   pgdata:
