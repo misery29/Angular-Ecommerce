@@ -24,7 +24,8 @@ export class AuthGuard implements CanActivate{
 
             request['user'] = payload;
         } catch (error) {
-            console.log("bezin")
+            console.log("bezin", error)
+            console.log(request.headers)
             throw new UnauthorizedException()
         }
 
