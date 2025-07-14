@@ -1,0 +1,120 @@
+.products {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  &__header {
+    text-align: center;
+    margin-bottom: 3rem;
+    &-icon {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      margin-bottom: 1rem;
+      color: #ff6b6b;
+    }
+    &-title {
+      color: #222;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 1px;
+    }
+    &-desc {
+      color: #666;
+      font-size: 1.1rem;
+    }
+  }
+
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    gap: 1rem;
+    p {
+      color: #666;
+      font-size: 1.1rem;
+    }
+  }
+
+  &__card {
+    height: 100%;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    &-title {
+      color: #222;
+      margin-bottom: 0.5rem;
+      font-size: 1.3rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+    &-desc {
+      color: #666;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    &-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    &-price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ff6b6b;
+    }
+  }
+
+  &__add-btn {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  &__cart {
+    position: sticky;
+    bottom: 2rem;
+    margin-top: 2rem;
+    &-items {
+      margin-bottom: 1rem;
+    }
+    &-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    &-total {
+      text-align: right;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+  }
+
+  &__checkout-btn {
+    width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    & mat-grid-list {
+      grid-template-columns: 1fr 1fr !important;
+    }
+  }
+  @media (max-width: 600px) {
+    padding: 1rem;
+    & mat-grid-list {
+      grid-template-columns: 1fr !important;
+    }
+    &__header-title {
+      font-size: 1.5rem;
+    }
+    &__card-title {
+      font-size: 1rem;
+    }
+  }
+} 

@@ -1,0 +1,104 @@
+.home {
+  &__container {
+    min-height: 100vh;
+  }
+
+  &__hero {
+    background: linear-gradient(135deg, var(--festival-primary) 0%, var(--festival-secondary) 100%);
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+
+    &-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    &-icon {
+      font-size: 4rem;
+      width: 4rem;
+      height: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    &-title {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+
+    &-description {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    &-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      button {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  &__features {
+    padding: 4rem 2rem;
+    background: var(--festival-bg-light);
+
+    &-card {
+      height: 100%;
+      text-align: center;
+      transition: transform 0.3s;
+
+      &:hover {
+        transform: translateY(-5px);
+      }
+    }
+
+    &-icon {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      margin-bottom: 1rem;
+      color: var(--festival-primary);
+    }
+
+    &-title {
+      color: var(--festival-text-primary);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    &-description {
+      color: var(--festival-text-secondary);
+      line-height: 1.6;
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .home {
+    &__hero {
+      padding: 2rem 1rem;
+
+      &-title {
+        font-size: 2rem;
+      }
+      
+      &-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    
+    &__features {
+      padding: 2rem 1rem;
+    }
+  }
+} 

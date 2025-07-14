@@ -1,0 +1,57 @@
+// Variáveis de cores do festival
+:root {
+  --festival-primary: #667eea;
+  --festival-secondary: #764ba2;
+  --festival-accent: #ff6b6b;
+  --festival-success: #28a745;
+  --festival-warning: #ffc107;
+  --festival-text-primary: #333;
+  --festival-text-secondary: #666;
+  --festival-bg-light: #f8f9fa;
+}
+
+// Customizações globais do Material
+.mat-mdc-toolbar {
+  &.festival-toolbar {
+    background: linear-gradient(135deg, var(--festival-primary) 0%, var(--festival-secondary) 100%) !important;
+    color: white !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+}
+
+.mat-mdc-card {
+  &.festival-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+  }
+}
+
+// Utilitários
+.festival-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.festival-section {
+  padding: 4rem 0;
+}
+
+.festival-text-center {
+  text-align: center;
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .festival-container {
+    padding: 0 1rem;
+  }
+  
+  .festival-section {
+    padding: 2rem 0;
+  }
+}

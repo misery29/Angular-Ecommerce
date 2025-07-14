@@ -35,12 +35,13 @@ services:
     depends_on:
       - backend
     ports:
-      - "80:80"
+      - "4200:4200"
     volumes:
       - ./app/frontend:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development
+    command: npx ng serve --host 0.0.0.0 --proxy-config proxy.conf.json
 
 volumes:
   pgdata:
