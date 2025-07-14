@@ -100,13 +100,13 @@ export class LoginComponent {
 
       this.authService.signin({ email, password }).subscribe({
         next: (response) => {
-          this.snackBar.open('Login realizado com sucesso!', 'Fechar', { duration: 3000 });
+          this.snackBar.open('Login realizado com sucesso!', 'Fechar', { duration: 3000, verticalPosition: 'top' });
           this.router.navigate(['/']);
         },
         error: (error) => {
           console.error('Erro no login:', error);
           const message = error.error?.message || 'Erro ao fazer login';
-          this.snackBar.open(message, 'Fechar', { duration: 3000 });
+          this.snackBar.open(message, 'Fechar', { duration: 3000, verticalPosition: 'top' });
           this.loading = false;
         }
       });

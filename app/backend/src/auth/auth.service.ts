@@ -69,6 +69,14 @@ export class AuthService {
         });
 
         await this.redis.set(`token:${user.id}:${acessToken}`, '1', 'EX', 60 * 60);
-        return {acessToken};
+        const ttl = await this.redis.ttl(`token:${user.id}:${acessToken}`);
+        console.log('Token salvo no Redis com TTL:', ttl);
+        return {access_token: acessToken,
+                user: user,
+        };
+    }
+
+    async logout(token: string, userId: string) {
+        await this.redis.del(`token:${userId}:${token}`);
     }
 }

@@ -17,3 +17,4 @@ export class CreateProductDto {
   @IsString()
   imageUrl?: string;
 }
+

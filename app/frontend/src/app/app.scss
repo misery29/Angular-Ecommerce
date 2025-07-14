@@ -1,4 +1,3 @@
-// Variáveis de cores do festival
 :root {
   --festival-primary: #667eea;
   --festival-secondary: #764ba2;
@@ -10,7 +9,6 @@
   --festival-bg-light: #f8f9fa;
 }
 
-// Customizações globais do Material
 .mat-mdc-toolbar {
   &.festival-toolbar {
     background: linear-gradient(135deg, var(--festival-primary) 0%, var(--festival-secondary) 100%) !important;
@@ -30,7 +28,6 @@
   }
 }
 
-// Utilitários
 .festival-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -45,7 +42,6 @@
   text-align: center;
 }
 
-// Responsividade
 @media (max-width: 768px) {
   .festival-container {
     padding: 0 1rem;

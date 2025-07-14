@@ -40,14 +40,29 @@
     &-button {
       color: white !important;
       border-color: rgba(255,255,255,0.3) !important;
+      transition: background 0.2s, color 0.2s, border 0.2s;
 
       &:hover {
         background-color: rgba(255,255,255,0.1) !important;
+        color: var(--festival-secondary) !important;
       }
 
       &.active {
         background-color: rgba(255,255,255,0.2) !important;
       }
+    }
+  }
+
+  // Estilo especial para o botão de logout
+  &__nav-button.mat-stroked-button {
+    border: 1.5px solid #fff !important;
+    color: #fff !important;
+    background: transparent !important;
+    font-weight: 600;
+    &:hover {
+      background: rgba(255,255,255,0.15) !important;
+      color: #ff6b6b !important;
+      border-color: #ff6b6b !important;
     }
   }
 }
@@ -58,11 +73,11 @@
     &__container {
       padding: 0 1rem;
     }
-    
+
     &__nav {
       gap: 0.5rem;
     }
-    
+
     &__text {
       display: none;
     }

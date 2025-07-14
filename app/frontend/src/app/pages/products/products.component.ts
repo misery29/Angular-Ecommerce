@@ -110,7 +110,7 @@ export class ProductsComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erro ao carregar produtos:', error);
-        this.snackBar.open('Erro ao carregar produtos', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao carregar produtos', 'Fechar', { duration: 3000, verticalPosition: 'top' });
         this.loading = false;
       }
     });
@@ -118,7 +118,7 @@ export class ProductsComponent implements OnInit {
 
   addToCart(product: any) {
     this.cartItems.push(product);
-    this.snackBar.open(`${product.name} adicionado ao carrinho!`, 'Fechar', { duration: 2000 });
+    this.snackBar.open(`${product.name} adicionado ao carrinho!`, 'Fechar', { duration: 2000, verticalPosition: 'top' });
   }
 
   removeFromCart(productId: number) {
@@ -134,17 +134,16 @@ export class ProductsComponent implements OnInit {
 
   checkout() {
     if (!this.authService.isLoggedIn()) {
-      this.snackBar.open('Faça login para finalizar o pedido', 'Fechar', { duration: 3000 });
+      this.snackBar.open('Faça login para finalizar o pedido', 'Fechar', { duration: 3000, verticalPosition: 'top' });
       this.router.navigate(['/login']);
       return;
     }
 
     if (this.cartItems.length === 0) {
-      this.snackBar.open('Adicione produtos ao carrinho', 'Fechar', { duration: 3000 });
+      this.snackBar.open('Adicione produtos ao carrinho', 'Fechar', { duration: 3000, verticalPosition: 'top' });
       return;
     }
 
-    // Agrupar itens por produto e contar quantidade
     const itemCounts = new Map<number, number>();
     this.cartItems.forEach(item => {
       itemCounts.set(item.id, (itemCounts.get(item.id) || 0) + 1);
@@ -159,13 +158,13 @@ export class ProductsComponent implements OnInit {
 
     this.apiService.createOrder(order).subscribe({
       next: (order) => {
-        this.snackBar.open('Pedido criado com sucesso!', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Pedido criado com sucesso!', 'Fechar', { duration: 3000, verticalPosition: 'top' });
         this.cartItems = [];
         this.router.navigate(['/orders']);
       },
       error: (error) => {
         console.error('Erro ao criar pedido:', error);
-        this.snackBar.open('Erro ao criar pedido', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao criar pedido', 'Fechar', { duration: 3000, verticalPosition: 'top' });
       }
     });
   }

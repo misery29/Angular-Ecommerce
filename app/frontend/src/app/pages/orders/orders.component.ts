@@ -218,7 +218,7 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit() {
     if (!this.authService.isLoggedIn()) {
-      this.snackBar.open('Faça login para ver seus pedidos', 'Fechar', { duration: 3000 });
+      this.snackBar.open('Faça login para ver seus pedidos', 'Fechar', { duration: 3000, verticalPosition: 'top' });
       this.router.navigate(['/login']);
       return;
     }
@@ -235,7 +235,7 @@ export class OrdersComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erro ao carregar pedidos:', error);
-        this.snackBar.open('Erro ao carregar pedidos', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao carregar pedidos', 'Fechar', { duration: 3000, verticalPosition: 'top' });
         this.loading = false;
       }
     });

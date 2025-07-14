@@ -121,13 +121,13 @@ export class SignupComponent {
 
       this.authService.signup(userData).subscribe({
         next: (response) => {
-          this.snackBar.open('Cadastro realizado com sucesso!', 'Fechar', { duration: 3000 });
+          this.snackBar.open('Cadastro realizado com sucesso!', 'Fechar', { duration: 3000, verticalPosition: 'top' });
           this.router.navigate(['/']);
         },
         error: (error) => {
           console.error('Erro no cadastro:', error);
           const message = error.error?.message || 'Erro ao fazer cadastro';
-          this.snackBar.open(message, 'Fechar', { duration: 3000 });
+          this.snackBar.open(message, 'Fechar', { duration: 3000, verticalPosition: 'top' });
           this.loading = false;
         }
       });

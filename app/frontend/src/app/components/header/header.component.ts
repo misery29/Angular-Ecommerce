@@ -5,6 +5,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -51,18 +53,41 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
+  ) {
+    console.log('HEADER CONSTRUCTOR');
+  }
 
   ngOnInit() {
+    console.log('HEADER INIT');
     this.authService.currentUser$.subscribe(user => {
+      console.log('HEADER USER:', user);
       this.currentUser = user;
       this.isLoggedIn = !!user;
+      this.cdr.detectChanges();
     });
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/']);
+    const token = this.authService.getToken();
+    if (token) {
+      // Chama o endpoint de logout do backend
+      fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }).finally(() => {
+        this.authService.logout();
+        this.snackBar.open('Logout realizado com sucesso!', 'Fechar', { duration: 3000, verticalPosition: 'top' });
+        this.router.navigate(['/']);
+      });
+    } else {
+      this.authService.logout();
+      this.snackBar.open('Logout realizado com sucesso!', 'Fechar', { duration: 3000, verticalPosition: 'top' });
+      this.router.navigate(['/']);
+    }
   }
 } 
