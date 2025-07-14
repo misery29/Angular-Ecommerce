@@ -54,6 +54,7 @@
       height: 100%;
       text-align: center;
       transition: transform 0.3s;
+      background: var(--festival-bg-darker);
 
       &:hover {
         transform: translateY(-5px);

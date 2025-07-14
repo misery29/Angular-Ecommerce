@@ -39,14 +39,14 @@ export class OrdersService {
   async findByUser(userId: number) {
     return this.prisma.order.findMany({
       where: { clientId: userId },
-      include: { items: true },
+      include: { items: { include: { product: true } } },
     });
   }
 
   async findOneByUser(orderId: number, userId: number) {
     const order = await this.prisma.order.findFirst({
       where: { id: orderId, clientId: userId },
-      include: { items: true },
+      include: { items: { include: { product: true } } },
     });
     if (!order) throw new NotFoundException('Pedido não encontrado');
     return order;
