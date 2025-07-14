@@ -3,10 +3,14 @@ import { SigninDto, SignupDto } from './dtos/auth';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import Redis from 'ioredis';
 
 @Injectable()
 export class AuthService {
-    constructor(private prismaService: PrismaService, private jwtService: JwtService) {}
+    constructor(private prismaService: PrismaService,
+                private jwtService: JwtService,
+                @InjectRedis() private readonly redis: Redis,) {}
 
     async signup(data: SignupDto){
         const userAlreadyExists = await this.prismaService.user.findUnique({
@@ -62,7 +66,9 @@ export class AuthService {
             name: user.name,
             email: user.email,
             role: user.role,
-        })
+        });
+
+        await this.redis.set(`token:${user.id}:${acessToken}`, '1', 'EX', 60 * 60);
         return {acessToken};
     }
 }
