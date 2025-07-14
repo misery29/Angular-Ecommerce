@@ -14,12 +14,20 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  redis:
+    image: redis:7
+    container_name: festival_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
   backend:
     build: ./app/backend
     container_name: festival_backend
     restart: always
     depends_on:
       - postgres
+      - redis
     ports:
       - "3000:3000"
     volumes:
