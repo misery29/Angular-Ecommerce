@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { MatDividerModule } from '@angular/material/divider';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-orders',
@@ -19,7 +20,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatDividerModule
+    MatDividerModule,
+    FormsModule
   ],
   template: `
     <div class="orders__container">
@@ -31,8 +33,8 @@ import { MatDividerModule } from '@angular/material/divider';
 
       <div class="orders__search-bar">
         <mat-icon class="orders__search-icon">search</mat-icon>
-        <input class="orders__search-input" placeholder="Buscar por número do pedido, produto..." />
-        <select class="orders__filter-select">
+        <input class="orders__search-input" placeholder="Buscar por número do pedido, produto..." [(ngModel)]="searchTerm" (input)="applyFilters()" />
+        <select class="orders__filter-select" [(ngModel)]="sortOption" (change)="applyFilters()">
           <option value="">Ordenar por</option>
           <option value="total-asc">Valor: menor para maior</option>
           <option value="total-desc">Valor: maior para menor</option>
@@ -48,7 +50,7 @@ import { MatDividerModule } from '@angular/material/divider';
         <p>Carregando pedidos...</p>
       </div>
 
-      <div *ngIf="!loading && orders.length === 0" class="orders__empty">
+      <div *ngIf="!loading && filteredOrders.length === 0" class="orders__empty">
         <mat-icon class="orders__empty-icon">shopping_cart</mat-icon>
         <h2 class="orders__empty-title">Nenhum pedido encontrado</h2>
         <p class="orders__empty-desc">Você ainda não fez nenhum pedido</p>
@@ -58,8 +60,8 @@ import { MatDividerModule } from '@angular/material/divider';
         </button>
       </div>
 
-      <div *ngIf="!loading && orders.length > 0" class="orders__list">
-        <mat-card *ngFor="let order of orders" class="orders__card">
+      <div *ngIf="!loading && filteredOrders.length > 0" class="orders__list">
+        <mat-card *ngFor="let order of filteredOrders" class="orders__card">
           <mat-card-header>
             <div class="orders__card-header">
               <div class="orders__card-id">
@@ -98,7 +100,10 @@ import { MatDividerModule } from '@angular/material/divider';
 })
 export class OrdersComponent implements OnInit {
   orders: any[] = [];
+  filteredOrders: any[] = [];
   loading = true;
+  searchTerm = '';
+  sortOption = '';
 
   constructor(
     private apiService: ApiService,
@@ -122,6 +127,7 @@ export class OrdersComponent implements OnInit {
     this.apiService.getUserOrders().subscribe({
       next: (orders) => {
         this.orders = orders;
+        this.applyFilters();
         this.loading = false;
       },
       error: (error) => {
@@ -130,5 +136,44 @@ export class OrdersComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  applyFilters() {
+    let filtered = [...this.orders];
+    if (this.searchTerm.trim()) {
+      const term = this.searchTerm.trim().toLowerCase();
+      filtered = filtered.filter(order =>
+        order.id.toString().includes(term) ||
+        order.items.some((item: any) => item.product?.name?.toLowerCase().includes(term))
+      );
+    }
+    // Ordenação
+    switch (this.sortOption) {
+      case 'total-asc':
+        filtered.sort((a, b) => a.total - b.total);
+        break;
+      case 'total-desc':
+        filtered.sort((a, b) => b.total - a.total);
+        break;
+      case 'date-asc':
+        filtered.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        break;
+      case 'date-desc':
+        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        break;
+      case 'items-asc':
+        filtered.sort((a, b) =>
+          a.items.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0) -
+          b.items.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0)
+        );
+        break;
+      case 'items-desc':
+        filtered.sort((a, b) =>
+          b.items.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0) -
+          a.items.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0)
+        );
+        break;
+    }
+    this.filteredOrders = filtered;
   }
 } 
