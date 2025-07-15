@@ -35,13 +35,13 @@ interface Product {
         <mat-spinner></mat-spinner>
         <p>Carregando produtos...</p>
       </div>
-      <mat-grid-list cols="3" rowHeight="1:1.2" gutterSize="2rem" *ngIf="!loading">
-        <mat-grid-tile *ngFor="let product of products; let i = index">
+      <mat-grid-list [cols]="gridCols" [rowHeight]="gridRowHeight" gutterSize="2rem" *ngIf="!loading">
+        <mat-grid-tile *ngFor="let product of paginatedProducts(); let i = index">
           <mat-card class="products__card" (click)="addToCart(product)">
             <div class="products__card-img-wrapper">
               <img mat-card-image [src]="product.imageUrl" [alt]="product.name" />
-              <span *ngIf="i < 2" class="products__badge products__badge--new">Novo</span>
-              <span *ngIf="i === 2 || i === 3" class="products__badge products__badge--discount">-10%</span>
+              <span *ngIf="i < 2 && currentPage === 1" class="products__badge products__badge--new">Novo</span>
+              <span *ngIf="(i === 2 || i === 3) && currentPage === 1" class="products__badge products__badge--discount">-10%</span>
             </div>
             <mat-card-content class="products__card-content">
               <h3 class="products__card-title">{{ product.name }}</h3>
@@ -57,6 +57,11 @@ interface Product {
           </mat-card>
         </mat-grid-tile>
       </mat-grid-list>
+      <div class="products__pagination" *ngIf="!loading && totalPages > 1">
+        <button mat-stroked-button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+        <span class="products__pagination-info">Página {{ currentPage }} de {{ totalPages }}</span>
+        <button mat-stroked-button (click)="nextPage()" [disabled]="currentPage === totalPages">Próxima</button>
+      </div>
       <mat-card class="products__cart" *ngIf="cartItems.length > 0">
         <mat-card-header>
           <mat-card-title>
@@ -93,6 +98,10 @@ export class ProductsComponent implements OnInit {
   products: any[] = [];
   cartItems: any[] = [];
   loading = true;
+  gridCols = 1;
+  gridRowHeight = '1:1.3';
+  currentPage = 1;
+  pageSize = 10;
 
   constructor(
     private apiService: ApiService,
@@ -103,6 +112,22 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     this.loadProducts();
+    this.setGridCols();
+    window.addEventListener('resize', this.setGridCols.bind(this));
+  }
+
+  setGridCols() {
+    const width = window.innerWidth;
+    if (width < 600) {
+      this.gridCols = 1;
+      this.gridRowHeight = '1:1.3';
+    } else if (width < 900) {
+      this.gridCols = 2;
+      this.gridRowHeight = '1:1.2';
+    } else {
+      this.gridCols = 3;
+      this.gridRowHeight = '1:1.2';
+    }
   }
 
   loadProducts() {
@@ -171,5 +196,19 @@ export class ProductsComponent implements OnInit {
         this.snackBar.open('Erro ao criar pedido', 'Fechar', { duration: 3000, verticalPosition: 'top' });
       }
     });
+  }
+
+  get totalPages() {
+    return Math.ceil(this.products.length / this.pageSize);
+  }
+  paginatedProducts() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.products.slice(start, start + this.pageSize);
+  }
+  nextPage() {
+    if (this.currentPage < this.totalPages) this.currentPage++;
+  }
+  prevPage() {
+    if (this.currentPage > 1) this.currentPage--;
   }
 } 
