@@ -36,7 +36,7 @@ services:
       - ./app/backend:/app
     environment:
       DATABASE_URL: postgresql://dev:dev@postgres:5432/festival
-    command: sh -c "if [ ! -d ./prisma/migrations ] || [ -z \"$(ls -A ./prisma/migrations)\" ]; then npx prisma migrate dev --name init --skip-generate; fi && npx prisma generate && npx prisma migrate deploy && npm run start:dev"
+    command: sh -c "if [ ! -d ./prisma/migrations ] || [ -z \"$(ls -A ./prisma/migrations)\" ]; then npx prisma migrate dev --name init --skip-generate; fi && npx prisma generate && npx prisma migrate deploy && npx ts-node prisma/seed-admin.ts && npm run start:dev"
 
   frontend:
     build: ./app/frontend

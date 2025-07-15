@@ -1,60 +1,87 @@
-# Desafio FENG
+# Festival App – Como Rodar
 
-[![Feng Brasil](https://fengdevteam.s3.amazonaws.com/assets/powered-fengdev.png)](https://fengbrasil.com.br)
+Esse projeto é um e-commerce feito com Angular (frontend) e NestJS/Prisma (backend), usando PostgreSQL e Redis. Tudo roda em containers Docker, então não precisa instalar nada além do Docker.
 
-Criar uma aplicação web para visualizar os pedidos realizados durante um festival. Para cada pedido, o sistema deverá exibir os itens selecionados e os dados do comprador.
+## O que você vai precisar
 
-* Aplicantes para a vaga de full-stack deverão modelar o banco de dados e desenvolver a API.
-* Caso você aplique para a vaga de front-end, utilize os arquivos .json no repositório
-* **É necessário adicionar seu CV atualizado e com dados para contato**
+- Docker instalado e rodando.
 
+---
 
-Crie um fork do repositório e, ao concluir o desafio, faça um pull-request.
+## Subindo tudo de uma vez
 
-*Mesmo que você não consiga concluir o desafio, não deixe de criar o pull-request.*
+1. Abre o terminal na pasta do projeto.
+2. Roda:
+   ```bash
+   ./start-festival.sh
+   ```
 
-## Requerimentos
+---
 
-* É necessário descrever sua solução e o que te levou a tomar as decisões
-* O sistema deve ser responsivo
-* A página é composta pelos elementos abaixo:
-   * Seção de filtros (Datas de início e fim, valor e nome do cliente).
-   * Lista dos pedidos filtrados
-   * Modal exibindo as informações do pedido e dados do cliente
-* As informações de clientes são:
-   * id
-   * nome
-   * e-mail
-   * telefone
-* As informações dos itens são:
-   * id
-   * nome
-   * descrição
-   * valor unitário
-* As informações dos pedidos são:
-   * id
-   * data
-   * itens
-   * cliente
+## Onde acessar
+
+- **Frontend:** [http://localhost:4200](http://localhost:4200)
+- **Backend (API):** [http://localhost:3000](http://localhost:3000)
+- **Banco de Dados:** localhost:5432 (PostgreSQL)
+- **Redis:** localhost:6379
+
+Se quiser ver os logs rolando:
+```bash
+docker-compose logs -f
+```
+Para desligar tudo:
+```bash
+docker-compose down
+```
+
+---
+
+## Variáveis de ambiente (importante!)
+
+O backend precisa de algumas variáveis pra funcionar:
+- `DATABASE_URL` (já vem do docker-compose)
+- `JWT_SECRET` (define um segredo pra autenticação)
+- `REDIS_HOST` e `REDIS_PORT` (pra cache e sessões)
+
+No Docker, o docker-compose já define o básico, mas **você precisa garantir que todas as variáveis estejam lá**. Exemplo de como deve ficar o bloco do backend no `docker-compose.yml`:
+
+```yaml
+  backend:
+    # ...
+    environment:
+      DATABASE_URL: postgresql://dev:dev@postgres:5432/festival
+      JWT_SECRET: segredinnnn
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+```
+
+Se faltar alguma variável, o backend pode não funcionar direito!
+
+---
+
+## Usuário Admin para Teste
+
+Já tem um admin criado no banco:
+- **Email:** admin@admin.com
+- **Senha:** Admin123
+
+---
+
+## Por que desse jeito?
+
+- **Docker:** Pra não ter dor de cabeça com dependência, versão de Node, banco, nada. Sobe igual pra todo mundo.
+- **Script start-festival.sh:** Um comando só, sem precisar decorar docker-compose.
+- **Angular + NestJS:** Fácil de manter, separar as coisas e escalar depois. Angular é ótimo pra interface, NestJS deixa o backend organizado.
+- **Prisma:** Ajuda a mexer no banco sem ficar escrevendo Query.
+- **Redis:** Usado pra gerenciamento de tokens e sessões, melhora performance.
+
+---
 
 ## Dicas
 
-* Controle de acesso (login) não é obrigatório mas desejável
-* É permito o uso dos frameworks visuais Bootstrap e Material. Uma interface customizada será bem vista.
+- Se der erro, confere se o Docker está aberto.
+- Se quiser resetar tudo, pode rodar o script de novo e escolher limpar as imagens.
 
-## Stack desejável
+---
 
-*Back-end*
-* NodeJs
-  * Frameworks AdonisJs ou NestJs
-* Banco de dados:
-   * PostgreSQL
-   * Redis
-
-*Front-end*
-* HTML5
-* SCSS
-* CSS do BEM
-* Javascript / TypeScript
-  * Angular ou Ionic
-
+Qualquer dúvida, só chamar! 
