@@ -1,0 +1,108 @@
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  max-width: 400px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -4px 0 24px rgba(0,0,0,0.13);
+  z-index: 2100;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  flex-direction: column;
+  &.open {
+    transform: translateX(0);
+  }
+}
+.cart-drawer__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.25);
+  z-index: 2099;
+}
+.cart-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-bottom: 1px solid #eee;
+}
+.cart-drawer__content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 1.2rem 1.5rem;
+}
+.cart-drawer__empty {
+  color: #888;
+  text-align: center;
+  margin-top: 2rem;
+}
+.cart-drawer__item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+.cart-drawer__item-img {
+  width: 3.2rem;
+  height: 3.2rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  background: #f6f7f9;
+}
+.cart-drawer__item-info {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.cart-drawer__item-name {
+  font-weight: 600;
+  color: #222;
+  font-size: 1.05rem;
+}
+.cart-drawer__item-qty {
+  color: #888;
+  font-size: 0.95rem;
+}
+.cart-drawer__item-price {
+  color: #444;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+.cart-drawer__footer {
+  padding: 1.2rem 1.5rem 1.5rem 1.5rem;
+  border-top: 1px solid #eee;
+  background: #fafbfc;
+}
+.cart-drawer__total {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #222;
+}
+.cart-drawer__checkout-btn {
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 0.9rem 0;
+  border-radius: 0.7rem;
+  box-shadow: 0 2px 8px rgba(60,60,60,0.07);
+}
+@media (max-width: 600px) {
+  .cart-drawer {
+    max-width: 100vw;
+    width: 100vw;
+  }
+  .cart-drawer__header, .cart-drawer__content, .cart-drawer__footer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+} 

@@ -37,7 +37,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
               <mat-card-content>
                 <mat-icon class="home__features-icon">shopping_bag</mat-icon>
                 <h3 class="home__features-title">Produtos Diversos</h3>
-                <p class="home__features-description">Encontre uma grande variedade de produtos para o seu festival.</p>
+                <p class="home__features-description">Encontre uma grande variedade de produtos para curtir o festival.</p>
               </mat-card-content>
             </mat-card>
           </mat-grid-tile>

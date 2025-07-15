@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { CartService, CartItem } from '../../services/cart.service';
 
 interface Product {
   id: number;
@@ -37,7 +38,7 @@ interface Product {
       </div>
       <mat-grid-list [cols]="gridCols" [rowHeight]="gridRowHeight" gutterSize="2rem" *ngIf="!loading">
         <mat-grid-tile *ngFor="let product of paginatedProducts(); let i = index">
-          <mat-card class="products__card" (click)="addToCart(product)">
+          <mat-card class="products__card">
             <div class="products__card-img-wrapper">
               <img mat-card-image [src]="product.imageUrl" [alt]="product.name" />
               <span *ngIf="i < 2 && currentPage === 1" class="products__badge products__badge--new">Novo</span>
@@ -49,7 +50,7 @@ interface Product {
             </mat-card-content>
             <div class="products__card-bottom">
               <span class="products__card-price products__card-price--highlight">R$ {{ product.price.toFixed(2) }}</span>
-              <button mat-raised-button color="primary" class="products__add-btn products__add-btn--big">
+              <button mat-raised-button color="primary" class="products__add-btn products__add-btn--big" (click)="addToCart(product, $event)">
                 <mat-icon>add_shopping_cart</mat-icon>
                 Adicionar ao carrinho
               </button>
@@ -62,41 +63,12 @@ interface Product {
         <span class="products__pagination-info">Página {{ currentPage }} de {{ totalPages }}</span>
         <button mat-stroked-button (click)="nextPage()" [disabled]="currentPage === totalPages">Próxima</button>
       </div>
-      <mat-card class="products__cart" *ngIf="cartItems.length > 0">
-        <mat-card-header>
-          <mat-card-title>
-            <mat-icon>shopping_cart</mat-icon>
-            Carrinho ({{ cartItems.length }} itens)
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="products__cart-items">
-            <div *ngFor="let item of cartItems" class="products__cart-item">
-              <span>{{ item.name }}</span>
-              <span>R$ {{ item.price.toFixed(2) }}</span>
-              <button mat-icon-button color="warn" (click)="removeFromCart(item.id)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="products__cart-total">
-            <strong>Total: R$ {{ getTotalPrice().toFixed(2) }}</strong>
-          </div>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-raised-button color="accent" (click)="checkout()" class="products__checkout-btn">
-            <mat-icon>check_circle</mat-icon>
-            Finalizar Pedido
-          </button>
-        </mat-card-actions>
-      </mat-card>
     </div>
   `,
   styleUrl: './products.component.scss'
 })
 export class ProductsComponent implements OnInit {
-  products: any[] = [];
-  cartItems: any[] = [];
+  products: Product[] = [];
   loading = true;
   gridCols = 1;
   gridRowHeight = '1:1.3';
@@ -107,7 +79,8 @@ export class ProductsComponent implements OnInit {
     private apiService: ApiService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private cart: CartService
   ) {}
 
   ngOnInit() {
@@ -145,57 +118,16 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  addToCart(product: any) {
-    this.cartItems.push(product);
+  addToCart(product: Product, event: Event) {
+    event.stopPropagation();
+    this.cart.addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      quantity: 1
+    });
     this.snackBar.open(`${product.name} adicionado ao carrinho!`, 'Fechar', { duration: 2000, verticalPosition: 'top' });
-  }
-
-  removeFromCart(productId: number) {
-    const index = this.cartItems.findIndex(item => item.id === productId);
-    if (index > -1) {
-      this.cartItems.splice(index, 1);
-    }
-  }
-
-  getTotalPrice(): number {
-    return this.cartItems.reduce((total, item) => total + item.price, 0);
-  }
-
-  checkout() {
-    if (!this.authService.isLoggedIn()) {
-      this.snackBar.open('Faça login para finalizar o pedido', 'Fechar', { duration: 3000, verticalPosition: 'top' });
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    if (this.cartItems.length === 0) {
-      this.snackBar.open('Adicione produtos ao carrinho', 'Fechar', { duration: 3000, verticalPosition: 'top' });
-      return;
-    }
-
-    const itemCounts = new Map<number, number>();
-    this.cartItems.forEach(item => {
-      itemCounts.set(item.id, (itemCounts.get(item.id) || 0) + 1);
-    });
-
-    const orderItems = Array.from(itemCounts.entries()).map(([productId, quantity]) => ({
-      productId,
-      quantity
-    }));
-
-    const order = { items: orderItems };
-
-    this.apiService.createOrder(order).subscribe({
-      next: (order) => {
-        this.snackBar.open('Pedido criado com sucesso!', 'Fechar', { duration: 3000, verticalPosition: 'top' });
-        this.cartItems = [];
-        this.router.navigate(['/orders']);
-      },
-      error: (error) => {
-        console.error('Erro ao criar pedido:', error);
-        this.snackBar.open('Erro ao criar pedido', 'Fechar', { duration: 3000, verticalPosition: 'top' });
-      }
-    });
   }
 
   get totalPages() {

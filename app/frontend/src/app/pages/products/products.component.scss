@@ -203,31 +203,6 @@
     }
   }
 
-  &__cart {
-    position: sticky;
-    bottom: 2rem;
-    margin-top: 2rem;
-    &-items {
-      margin-bottom: 1rem;
-    }
-    &-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #eee;
-    }
-    &-total {
-      text-align: right;
-      margin-bottom: 1rem;
-      font-size: 1.08rem;
-    }
-  }
-
-  &__checkout-btn {
-    width: 100%;
-  }
-
   &__pagination {
     display: flex;
     justify-content: center;
