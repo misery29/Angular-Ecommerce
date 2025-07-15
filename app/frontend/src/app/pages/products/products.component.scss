@@ -5,24 +5,26 @@
 
   &__header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     &-icon {
-      font-size: 3rem;
-      width: 3rem;
-      height: 3rem;
-      margin-bottom: 1rem;
-      color: #ff6b6b;
+      font-size: 2.2rem;
+      width: 2.2rem;
+      height: 2.2rem;
+      margin-bottom: 0.7rem;
+      color: #6c7a89;
     }
     &-title {
       color: #222;
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
+      font-size: 1.7rem;
+      margin-bottom: 0.3rem;
       font-family: 'Montserrat', sans-serif;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
+      font-weight: 600;
     }
     &-desc {
-      color: #666;
-      font-size: 1.1rem;
+      color: #888;
+      font-size: 0.98rem;
+      font-weight: 400;
     }
   }
 
@@ -40,18 +42,22 @@
   }
 
   &__card {
-    height: 100%;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    background: var(--festival-bg-darker);
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(60,60,60,0.07);
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    align-items: center;
+    transition: box-shadow 0.18s, transform 0.18s;
+    min-height: 420px;
+    min-width: 270px;
+    max-width: 350px;
+    width: 100%;
+    padding: 0 0 1.5rem 0;
     position: relative;
-    min-height: 370px;
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 24px rgba(60,60,60,0.13);
+      transform: translateY(-3px) scale(1.01);
     }
   }
 
@@ -61,18 +67,49 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f3f3f3;
-    border-radius: 8px 8px 0 0;
+    background: #f6f7f9;
+    border-radius: 18px 18px 0 0;
     overflow: hidden;
+    position: relative;
+    margin-bottom: 1.1rem;
     img {
-      width: 100%;
+      width: 75%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
       display: block;
-      min-height: 180px;
-      min-width: 100px;
-      background: #f3f3f3;
+      min-height: 100px;
+      background: #f6f7f9;
+      border-radius: 12px 12px 0 0;
+      box-shadow: none;
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 0.22rem 1.1rem;
+    border-radius: 14px;
+    box-shadow: none;
+    z-index: 2;
+    letter-spacing: 0.2px;
+    background: #f7e3c0;
+    color: #7a4c15;
+    border: 1px solid #f1d6a7;
+    &--discount {
+      left: auto;
+      right: 16px;
+      background: #ffe9a7;
+      color: #8a6d1b;
+      border: 1px solid #f7d97a;
+    }
+    &--new {
+      background: #ffd6b3;
+      color: #a05a1c;
+      border: 1px solid #f7c08a;
     }
   }
 
@@ -80,33 +117,38 @@
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: flex-start;
-    padding-bottom: 0.5rem;
+    width: 100%;
+    padding: 0 0.7rem;
   }
 
   &__card-title {
     color: #222;
-    margin-bottom: 0.5rem;
-    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+    font-size: 1.05rem;
     font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.2px;
   }
   &__card-desc {
-    color: #666;
-    margin-bottom: 1rem;
-    line-height: 1.5;
-    min-height: 40px;
-    font-size: 1rem;
+    color: #a0a7b4;
+    margin-bottom: 0.7rem;
+    line-height: 1.4;
+    min-height: 28px;
+    font-size: 0.92rem;
+    text-align: center;
+    font-weight: 400;
   }
 
   &__card-bottom {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    padding: 0.7rem 0 0.2rem 0;
-    border-top: 1px solid #eee;
-    background: #fafbfc;
-    border-radius: 0 0 8px 8px;
-    min-height: 56px;
+    width: 100%;
+    gap: 0.4rem;
+    margin-top: 0.2rem;
   }
 
   &__card-price {
@@ -115,9 +157,39 @@
     color: #ff6b6b;
   }
 
+  &__card-price--highlight {
+    color: #3a4a5a;
+    font-size: 1.18rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    text-shadow: none;
+    margin-bottom: 0.1rem;
+  }
+
   &__add-btn {
     font-weight: 600;
     letter-spacing: 0.5px;
+  }
+
+  &__add-btn--big {
+    font-size: 0.98rem;
+    font-weight: 600;
+    padding: 0.6rem 0;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(60,60,60,0.07);
+    letter-spacing: 0.2px;
+    width: 90%;
+    background: #e9ecf1 !important;
+    color: #3a4a5a !important;
+    border: none;
+    transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+    margin-top: 0.1rem;
+    &:hover {
+      background: #d3dae3 !important;
+      color: #222 !important;
+      box-shadow: 0 3px 12px rgba(60,60,60,0.13);
+      transform: scale(1.02);
+    }
   }
 
   &__cart {
@@ -137,7 +209,7 @@
     &-total {
       text-align: right;
       margin-bottom: 1rem;
-      font-size: 1.2rem;
+      font-size: 1.08rem;
     }
   }
 
@@ -150,7 +222,11 @@
       grid-template-columns: 1fr 1fr !important;
     }
     &__card-img-wrapper {
-      height: 140px;
+      height: 120px;
+    }
+    &__card {
+      min-width: 0;
+      max-width: 100%;
     }
   }
   @media (max-width: 600px) {
@@ -159,17 +235,21 @@
       grid-template-columns: 1fr !important;
     }
     &__header-title {
-      font-size: 1.5rem;
+      font-size: 1.1rem;
     }
     &__card-title {
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
     &__card-img-wrapper {
-      height: 100px;
+      height: 80px;
     }
     &__card-bottom {
-      font-size: 1rem;
-      min-height: 44px;
+      font-size: 0.9rem;
+      min-height: 32px;
+    }
+    &__add-btn--big {
+      font-size: 0.9rem;
+      padding: 0.5rem 0;
     }
   }
 } 

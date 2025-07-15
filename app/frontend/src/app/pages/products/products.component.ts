@@ -36,20 +36,22 @@ interface Product {
         <p>Carregando produtos...</p>
       </div>
       <mat-grid-list cols="3" rowHeight="1:1.2" gutterSize="2rem" *ngIf="!loading">
-        <mat-grid-tile *ngFor="let product of products">
+        <mat-grid-tile *ngFor="let product of products; let i = index">
           <mat-card class="products__card" (click)="addToCart(product)">
             <div class="products__card-img-wrapper">
-              <img mat-card-image [src]="product.imageUrl || 'https://via.placeholder.com/300x200?text=Sem+Imagem'" [alt]="product.name" />
+              <img mat-card-image [src]="product.imageUrl" [alt]="product.name" />
+              <span *ngIf="i < 2" class="products__badge products__badge--new">Novo</span>
+              <span *ngIf="i === 2 || i === 3" class="products__badge products__badge--discount">-10%</span>
             </div>
             <mat-card-content class="products__card-content">
               <h3 class="products__card-title">{{ product.name }}</h3>
               <p class="products__card-desc">{{ product.description }}</p>
             </mat-card-content>
             <div class="products__card-bottom">
-              <span class="products__card-price">R$ {{ product.price.toFixed(2) }}</span>
-              <button mat-raised-button color="primary" class="products__add-btn">
+              <span class="products__card-price products__card-price--highlight">R$ {{ product.price.toFixed(2) }}</span>
+              <button mat-raised-button color="primary" class="products__add-btn products__add-btn--big">
                 <mat-icon>add_shopping_cart</mat-icon>
-                Adicionar
+                Adicionar ao carrinho
               </button>
             </div>
           </mat-card>
