@@ -53,7 +53,6 @@
     }
   }
 
-  // Estilo especial para o botão de logout
   &__nav-button.mat-stroked-button {
     border: 1.5px solid #fff !important;
     color: #fff !important;
@@ -67,7 +66,22 @@
   }
 }
 
-// Responsividade
+.header__admin-badge {
+  background: #fff;
+  color: var(--festival-primary);
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.18rem 0.7rem;
+  margin-left: 0.6rem;
+  box-shadow: 0 2px 8px rgba(60,60,60,0.07);
+  border: 1.5px solid var(--festival-secondary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 @media (max-width: 768px) {
   .header {
     &__container {

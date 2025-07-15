@@ -43,6 +43,7 @@ import { FormsModule } from '@angular/forms';
           <option value="items-asc">Itens: menor para maior</option>
           <option value="items-desc">Itens: maior para menor</option>
         </select>
+        <input *ngIf="isAdmin" class="orders__search-input orders__search-input--client" placeholder="Filtrar por cliente..." [(ngModel)]="clientNameTerm" (input)="applyFilters()" />
       </div>
 
       <div *ngIf="loading" class="orders__loading">
@@ -72,6 +73,10 @@ import { FormsModule } from '@angular/forms';
                 <mat-icon>event</mat-icon>
                 <span>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
               </div>
+            </div>
+            <div *ngIf="isAdmin && order.client" class="orders__card-client">
+              <mat-icon>person</mat-icon>
+              <span>{{ order.client.name }}</span>
             </div>
           </mat-card-header>
           <mat-divider></mat-divider>
@@ -104,6 +109,8 @@ export class OrdersComponent implements OnInit {
   loading = true;
   searchTerm = '';
   sortOption = '';
+  isAdmin = false;
+  clientNameTerm = '';
 
   constructor(
     private apiService: ApiService,
@@ -119,7 +126,13 @@ export class OrdersComponent implements OnInit {
       return;
     }
 
-    this.loadOrders();
+    const user = this.authService.getCurrentUser();
+    this.isAdmin = user && user.role === 'admin';
+    if (this.isAdmin) {
+      this.loadAllOrdersForAdmin();
+    } else {
+      this.loadOrders();
+    }
   }
 
   loadOrders() {
@@ -138,14 +151,36 @@ export class OrdersComponent implements OnInit {
     });
   }
 
+  loadAllOrdersForAdmin() {
+    this.loading = true;
+    this.apiService.getAllOrdersForAdmin().subscribe({
+      next: (orders) => {
+        this.orders = orders;
+        this.applyFilters();
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar pedidos (admin):', error);
+        this.snackBar.open('Erro ao carregar pedidos', 'Fechar', { duration: 3000, verticalPosition: 'top' });
+        this.loading = false;
+      }
+    });
+  }
+
   applyFilters() {
     let filtered = [...this.orders];
+    // Filtro por texto nome do produto
     if (this.searchTerm.trim()) {
       const term = this.searchTerm.trim().toLowerCase();
       filtered = filtered.filter(order =>
         order.id.toString().includes(term) ||
         order.items.some((item: any) => item.product?.name?.toLowerCase().includes(term))
       );
+    }
+    // Filtro por nome do cliente (apenas admin)
+    if (this.isAdmin && this.clientNameTerm.trim()) {
+      const clientTerm = this.clientNameTerm.trim().toLowerCase();
+      filtered = filtered.filter(order => order.client?.name?.toLowerCase().includes(clientTerm));
     }
     // Ordenação
     switch (this.sortOption) {

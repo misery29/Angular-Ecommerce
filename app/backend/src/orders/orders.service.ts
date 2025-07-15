@@ -55,7 +55,10 @@ export class OrdersService {
   async findAllOrders() {
     return this.prisma.order.findMany({
       include: {
-        items: { include: { product: true } },}
-    })};
+        items: { include: { product: true } },
+        client: { select: { id: true, name: true, email: true } },
+      }
+    });
+  }
 
 };

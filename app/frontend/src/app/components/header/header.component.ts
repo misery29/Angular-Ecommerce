@@ -18,6 +18,7 @@ import { ChangeDetectorRef } from '@angular/core';
         <div class="header__logo">
           <mat-icon class="header__icon">festival</mat-icon>
           <span class="header__text">Festival App</span>
+          <span *ngIf="currentUser?.role === 'admin'" class="header__admin-badge">Admin</span>
         </div>
         
         <nav class="header__nav">
