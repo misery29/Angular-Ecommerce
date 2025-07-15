@@ -38,18 +38,20 @@ interface Product {
       <mat-grid-list cols="3" rowHeight="1:1.2" gutterSize="2rem" *ngIf="!loading">
         <mat-grid-tile *ngFor="let product of products">
           <mat-card class="products__card" (click)="addToCart(product)">
-            <img mat-card-image [src]="product.imageUrl || 'https://via.placeholder.com/300x200'" [alt]="product.name">
-            <mat-card-content>
+            <div class="products__card-img-wrapper">
+              <img mat-card-image [src]="product.imageUrl || 'https://via.placeholder.com/300x200?text=Sem+Imagem'" [alt]="product.name" />
+            </div>
+            <mat-card-content class="products__card-content">
               <h3 class="products__card-title">{{ product.name }}</h3>
               <p class="products__card-desc">{{ product.description }}</p>
-              <div class="products__card-price-row">
-                <span class="products__card-price">R$ {{ product.price.toFixed(2) }}</span>
-                <button mat-raised-button color="primary" class="products__add-btn">
-                  <mat-icon>add_shopping_cart</mat-icon>
-                  Adicionar
-                </button>
-              </div>
             </mat-card-content>
+            <div class="products__card-bottom">
+              <span class="products__card-price">R$ {{ product.price.toFixed(2) }}</span>
+              <button mat-raised-button color="primary" class="products__add-btn">
+                <mat-icon>add_shopping_cart</mat-icon>
+                Adicionar
+              </button>
+            </div>
           </mat-card>
         </mat-grid-tile>
       </mat-grid-list>
