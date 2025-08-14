@@ -1,4 +1,5 @@
 # Festival App – Como Rodar
+<img width="1834" height="936" alt="image" src="https://github.com/user-attachments/assets/df7097c3-8803-4809-9664-5db9b7577527" />
 
 Esse projeto é um e-commerce feito com Angular (frontend) e NestJS/Prisma (backend), usando PostgreSQL e Redis. Tudo roda em containers Docker, então não precisa instalar nada além do Docker.
 
