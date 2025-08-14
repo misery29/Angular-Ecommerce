@@ -3,8 +3,15 @@ const prisma = new PrismaClient();
 
 const IMAGE_PLACEHOLDER = 'https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?v=1530129081';
 
-export async function main() {
+async function main() {
+  const productCount = await prisma.product.count();
 
+  if (productCount > 0) {
+    console.log('🌱 O banco de dados de produtos já está populado. Nenhum produto foi adicionado.');
+    return;
+  }
+
+  console.log('🌱 Populando o banco de dados com produtos...');
   await prisma.product.createMany({
     data: [
       {
@@ -67,9 +74,9 @@ export async function main() {
         price: 54.90,
         imageUrl: IMAGE_PLACEHOLDER
       },
-    ],
-    skipDuplicates: true,
+    ]
   });
+  console.log('✅ Produtos criados com sucesso!');
 }
 
 main()
@@ -77,4 +84,6 @@ main()
     console.error(e);
     process.exit(1);
   })
-  .finally(() => prisma.$disconnect()); 
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
