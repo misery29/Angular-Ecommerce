@@ -33,54 +33,11 @@ Para desligar tudo:
 ```bash
 docker-compose down
 ```
-
----
-
-## Variáveis de ambiente (importante!)
-
-O backend precisa de algumas variáveis pra funcionar:
-- `DATABASE_URL` (já vem do docker-compose)
-- `JWT_SECRET` (define um segredo pra autenticação)
-- `REDIS_HOST` e `REDIS_PORT` (pra cache e sessões)
-
-No Docker, o docker-compose já define o básico, mas **você precisa garantir que todas as variáveis estejam lá**. Exemplo de como deve ficar o bloco do backend no `docker-compose.yml`:
-
-```yaml
-  backend:
-    # ...
-    environment:
-      DATABASE_URL: postgresql://dev:dev@postgres:5432/festival
-      JWT_SECRET: segredinnnn
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-```
-
-Se faltar alguma variável, o backend pode não funcionar direito!
-
----
-
 ## Usuário Admin para Teste
 
 Já tem um admin criado no banco:
 - **Email:** admin@admin.com
 - **Senha:** Admin123
-
----
-
-## Por que desse jeito?
-
-- **Docker:** Pra não ter dor de cabeça com dependência, versão de Node, banco, nada. Sobe igual pra todo mundo.
-- **Script start-festival.sh:** Um comando só, sem precisar decorar docker-compose.
-- **Angular + NestJS:** Fácil de manter, separar as coisas e escalar depois. Angular é ótimo pra interface, NestJS deixa o backend organizado.
-- **Prisma:** Ajuda a mexer no banco sem ficar escrevendo Query.
-- **Redis:** Usado pra gerenciamento de tokens e sessões, melhora performance.
-
----
-
-## Dicas
-
-- Se der erro, confere se o Docker está aberto.
-- Se quiser resetar tudo, pode rodar o script de novo e escolher limpar as imagens.
 
 ---
 
